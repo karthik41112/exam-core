@@ -1,6 +1,7 @@
 package examSeating.models;
 
 import java.util.*;
+
 import java.io.Serializable;
 
 public class Room implements Serializable{
@@ -13,16 +14,16 @@ public class Room implements Serializable{
 	private int columns;
 	private int noOfTables;
 	
-	private List<Tables> tables;
+	private List<Tables> tables=new ArrayList<>();
 	
 //	advance
-	private int noOfSubjects;
-	private Invigilator invg;
+	private int noOfSubjects=0;
+	private Invigilator invg =null;
 	private List<Subject> subjects=new ArrayList<>();
 	private List<Student> students=new  ArrayList<>();
-	private int TotalSeats;
-	private int filledSeats;
-	private int seatsItabel;
+	private int TotalSeats=0;
+	private int filledSeats=0;
+	private int seatsItabel=0;
 	
 	
 	
@@ -49,7 +50,7 @@ public class Room implements Serializable{
 	
 	//creating tables
 	public void createTables() {
-		tables=new ArrayList<>();
+		
 		int k=0;
 		for(int i=0;i<rows;i++) {
 			for(int j=0;j<columns;j++) {
@@ -62,11 +63,61 @@ public class Room implements Serializable{
 			}
 		}
 		k=0;
+	}
+	
+	// columnWise Allocation
+	public void columnWise() {
+		
+		int c=columns*seatsItabel;
+		int r=rows;
+		
+		Student a[][]=new Student[r][c];
+		
+		int alloted=0;
+		for(int i=0;i<c;i++) {
+			Subject s=subjects.get(i%noOfSubjects);
+			List<Student> sl=s.getStudents();
+			
+			
+			for(int j=0;j<r;j++) {
+				if(TotalSeats==alloted) {
+					break;
+				}
+				if(sl.size()==s.allocatedFrom) {
+					a[j][i]=null;
+				}else {
+					
+					a[j][i]=sl.get(s.allocatedFrom++);
+					filledSeats++;
+					
+				}
+				alloted++;
+				
+			}
+		}
+		
+		int k=0;
+		alloted=0;
+		Tables t=null;
+		for(int i=0;i<rows;i++) {
+			for(int j=0;j<c;j++) {
+				if(TotalSeats==alloted) {
+					break;
+				}
+				if(j%seatsItabel==0)
+					t=tables.get(k++);
+				t.addStudent(a[i][j]);
+			}
+		}
+		
+	}
+	
+	public void display() {
+		int k=0;
 		for(int i=0;i<rows;i++) {
 			System.out.print("[ ");
 			for(int j=0;j<columns;j++) {
 				if(k<noOfTables) {
-					
 					Tables t=tables.get(k++);
 					System.out.print(t+" ");
 				}
@@ -161,6 +212,28 @@ public class Room implements Serializable{
 	}
 	public void setSeatsItabel(int seatsItabel) {
 		this.seatsItabel = seatsItabel;
-	}	
+		this.TotalSeats=seatsItabel*noOfTables;
+		for(Tables t:tables) {
+			t.setNoOfSeats(seatsItabel);
+		}
+	}
+	public void deleteDynamicData() {
+		noOfSubjects=0;
+		invg=null;
+		subjects=new  ArrayList<>();
+		students=new  ArrayList<>();
+		TotalSeats=0;
+		filledSeats=0;
+		seatsItabel=0;
+		for(Tables t:tables) {
+			t.setNoOfSeats(0);
+			t.deleteStudents();
+		}
+		
+	}
+	
+	public void Allocation() {
+		this.columnWise();
+	}
 
 }

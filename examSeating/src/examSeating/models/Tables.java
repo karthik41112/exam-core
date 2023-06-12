@@ -20,6 +20,13 @@ public class Tables implements Serializable {
 	public Tables() {
 		super();
 	}
+	
+	public void addStudent(Student s) {
+		students.add(s);
+	}
+	public void deleteStudents() {
+		students=new ArrayList<>();
+	}
 
 	public int getId() {
 		return id;
@@ -47,7 +54,7 @@ public class Tables implements Serializable {
 
 	@Override
 	public String toString() {
-		return "id=" + id ;
+		return "{"+students+"}";
 	}
 	
 	

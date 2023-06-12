@@ -1,9 +1,10 @@
 package examSeating.models;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Invigilator {
+public class Invigilator implements Serializable {
 	
 	private int id;
 	private String name;
@@ -44,7 +45,9 @@ public class Invigilator {
 	public void setDept(Department dept) {
 		this.dept = dept;
 	}
-	
+	public String display() {
+		return id+" "+name+" "+dept;
+	}
 	
 
 }

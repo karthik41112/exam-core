@@ -1,18 +1,22 @@
 package examSeating.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Subject {
+public class Subject implements Serializable{
 	
 	private int id;
 	private String subCode;
 	private String Name;
 	private Department dept;
+	public int allocatedFrom=0;
 	
-	private List<Student> students=new ArrayList<>();
+	private ArrayList<Student> students=new ArrayList<>();
+	
 	public Subject() {
 		super();
 	}
+	
 	public Subject(int id, String subCode, String name, Department dept) {
 		super();
 		this.id = id;
@@ -20,6 +24,7 @@ public class Subject {
 		Name = name;
 		this.dept = dept;
 	}
+	
 	
 	
 	public void addStudent(Student s) {
@@ -50,4 +55,25 @@ public class Subject {
 	public void setDept(Department dept) {
 		this.dept = dept;
 	}
+	public List<Student> getStudents() {
+		return students;
+	}
+	public void setStudents(ArrayList<Student> students) {
+		this.students = students;
+	}
+
+	public String displayStudent(){
+		
+		String s=subCode+"\n";
+		for(Student stu:students) {
+			s+=stu.getName()+"\n";
+		}
+		return s;
+	}
+
+	
+	public String display() {
+		return "[id=" + id + ", subCode=" + subCode + ", Name=" + Name + ", dept=" + dept + "]";
+	}
+	
 }

@@ -1,6 +1,8 @@
 package examSeating.models;
 
-public class Department {
+import java.io.Serializable;
+
+public class Department implements Serializable {
 	
 	private int id;
 	private String name;
@@ -34,4 +36,18 @@ public class Department {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
+	public String display() {
+		return "Department [id=" + id + ", name=" + name + "]";
+	}
+
+
+	@Override
+	public String toString() {
+		return "[name=" + name + "]";
+	}
+	
+	
+	
 }
